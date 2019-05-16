@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>récupération ajax</title>
+    <!-- utilisation d'un CDN type google -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+</head>
+<body>
+
+<button id="search">Click here</button>
+<br>
+<div id="reponse">
+</div>
+
+</body>
+<script>
+    $(document).ready(function() {
+        // Action qui est exécutée quand le formulaire est envoyé ( #connexion est l'ID du formulaire)
+        $('#search').on('click', function(e) {
+            console.log("click ok");
+            id = 1;
+            //path_url = "http://www.gpeps.be:81/test_ajax/" + id;
+            path_url = "https://www.gpeps.be/test_ajax/" + id;
+
+            // attention bien choisir l'url
+            // ok en 443 et en 81
+            console.log(path_url);
+            // Envoi de la requête HTTP en mode asynchrone avec POST
+            $.ajax({
+                xhrFields: {
+                    withCredentials: true
+                },
+                url: path_url,
+                type: 'GET',
+                //dataType: 'json', // JSON
+                dataType:'text',
+                success: function(data) { // Si ça c'est passé avec succès
+                    // ici on teste la réponse
+                    // alert(json);
+                    console.log("ok");
+                    console.log(data);
+                    // document.getElementById('reponse').innerHTML = data;
+                    // afficher dans div le texte
+                    // ok
+
+
+                    // afficher dans boîte de dialogue
+                    obj = JSON.parse(data); // conversion json en objet javascript
+                    val = obj.reponse;
+                    // {"reponse":{"id":"1","lastname":"harmegnies","firstname":"patrice","email":"patrice.harmegnies@gmail.com"}}
+                    message = "";
+                    message += "id: " + val.id + "<br>";
+                    message += "lastname: " + val.lastname + "<br>";
+                    message += "firstname: " + val.firstname + "<br>";
+                    message += "email: " + val.email + "<br>";
+
+                    document.getElementById('reponse').innerHTML = message;
+                    //ok
+                }
+            });
+        });
+    });
+</script>
+</html>
